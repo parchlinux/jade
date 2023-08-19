@@ -35,20 +35,21 @@ pub fn install_base_packages(kernel: String) {
         "sudo",
         "curl",
         "archlinux-keyring",
-        // Base Crystal
-        "crystal-core",
-        "crystal-branding",
+        // Base parch
+        "parch-pacman",
+        "parch-branding",
         // Extra goodies
-        "neofetch",
+        "neofetch-git",
         "btrfs-progs",
         "which",
         "base-devel",
         // Fonts
         "noto-fonts",
-        "noto-fonts-emoji",
+        "parch-emoji-ios",
         "noto-fonts-cjk",
         "noto-fonts-extra",
         "ttf-nerd-fonts-symbols-common",
+        "ttf-dejavu",
         "vazirmatn-fonts",
         // Common packages for all desktops
         "xterm",
@@ -57,8 +58,9 @@ pub fn install_base_packages(kernel: String) {
         "pipewire-alsa",
         "pipewire-jack",
         "wireplumber",
-        "crystal-first-setup",
-        "crystal-wallpapers",
+        "parchlinux-wallpapers",
+        "parch-gnome-backgrounds",
+        "parch-os-wallpapers",
         "power-profiles-daemon",
         "cups",
         "cups-pdf",
@@ -69,8 +71,8 @@ pub fn install_base_packages(kernel: String) {
         "zsh-completions",
         "ttf-liberation",
         "dnsmasq",
+        "paru",
     ]);
-    files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
 
     exec_eval(
         exec_chroot(
@@ -106,9 +108,8 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
     install::install(vec![
         "grub",
         "efibootmgr",
-        "crystal-grub-theme",
         "os-prober",
-        "crystal-branding",
+        "parch-branding",
     ]);
     let efidir = std::path::Path::new("/mnt").join(efidir);
     let efi_str = efidir.to_str().unwrap();
@@ -121,7 +122,7 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
             vec![
                 String::from("--target=x86_64-efi"),
                 format!("--efi-directory={}", efi_str),
-                String::from("--bootloader-id=crystal"),
+                String::from("--bootloader-id=parch"),
                 String::from("--removable"),
             ],
         ),
@@ -133,17 +134,10 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
             vec![
                 String::from("--target=x86_64-efi"),
                 format!("--efi-directory={}", efi_str),
-                String::from("--bootloader-id=crystal"),
+                String::from("--bootloader-id=parch"),
             ],
         ),
         "install grub as efi without --removable",
-    );
-    files_eval(
-        append_file(
-            "/mnt/etc/default/grub",
-            "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\"",
-        ),
-        "enable crystal grub theme",
     );
     exec_eval(
         exec_chroot(
@@ -157,9 +151,8 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
 pub fn install_bootloader_legacy(device: PathBuf) {
     install::install(vec![
         "grub",
-        "crystal-grub-theme",
         "os-prober",
-        "crystal-branding",
+        "parch-branding",
     ]);
     if !device.exists() {
         crash(format!("The device {device:?} does not exist"), 1);
@@ -171,13 +164,6 @@ pub fn install_bootloader_legacy(device: PathBuf) {
             vec![String::from("--target=i386-pc"), device],
         ),
         "install grub as legacy",
-    );
-    files_eval(
-        append_file(
-            "/mnt/etc/default/grub",
-            "GRUB_THEME=\"/usr/share/grub/themes/crystal/theme.txt\"",
-        ),
-        "enable crystal grub theme",
     );
     exec_eval(
         exec_chroot(

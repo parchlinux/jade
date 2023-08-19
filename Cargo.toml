@@ -1,6 +1,6 @@
 [package]
 name = "jade"
-description = "The new installer for crystal linux, contains backend and TUI"
+description = "The new installer for Parch linux, contains backend and TUI"
 authors = ["Amy <axtlos@getcryst.al>"]
 version = "1.2.7"
 edition = "2021"
@@ -8,7 +8,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [[bin]]
-name = "crystal-jade"
+name = "parch-jade"
 path = "src/main.rs"
 
 [dependencies]

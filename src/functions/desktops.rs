@@ -5,7 +5,6 @@ use crate::internal::*;
 pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
     log::debug!("Installing {:?}", desktop_setup);
     match desktop_setup {
-        DesktopSetup::Onyx => install_onyx(),
         DesktopSetup::Gnome => install_gnome(),
         DesktopSetup::Kde => install_kde(),
         DesktopSetup::Budgie => install_budgie(),
@@ -344,20 +343,6 @@ fn install_gnome() {
     enable_dm("gdm");
 }
 
-fn install_onyx() {
-    install(vec![
-        "xorg",
-        "onyx",
-        "sushi",
-        "pipewire",
-        "pipewire-pulse",
-        "pipewire-alsa",
-        "pipewire-jack",
-        "wireplumber",
-        "gdm",
-    ]);
-    enable_dm("gdm");
-}
 
 fn enable_dm(dm: &str) {
     log::debug!("Enabling {}", dm);
